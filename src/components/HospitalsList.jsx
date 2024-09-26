@@ -32,18 +32,27 @@ const HospitalList = () => {
   if (error) return <p>Error fetching hospitals: {error.message}</p>;
 
   return (
-    <div>
-      <h1 className='text-4xl text-center py-5 '>Hospitals List</h1>
-      <ul>
-        {hospitals.map((hospital) => (
-          <li key={hospital._id}>
-            <h2 className='py text-2xl'>{hospital.hospitalName}</h2>
-            {hospital.imageURL && <img src={hospital.imageURL} alt={hospital.hospitalName} />}
-            <p>{hospital.rating}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div className='bg-[#C0EBA6] w-full flex flex-col items-center py-5 px-4'>
+  <h1 className='text-[#4A4947] text-5xl mb-6'>Hospital List</h1>
+  <div className='w-full flex flex-wrap justify-center gap-6'>
+    {hospitals.map((hospital) => (
+      <div key={hospital._id} className='w-1/3 bg-white rounded-xl hover:bg-slate-200 shadow-xl p-4'>
+        {hospital.hospitalImage && (
+          <img className='h-40 w-full object-cover rounded-xl hover:scale-105' src={hospital.hospitalImage} alt={hospital.hospitalName} />
+        )}
+        <div className='p-2'>
+          <h2 className='font-bold text-lg'>{hospital.hospitalName}</h2>
+          <h5 className='font-semibold'>{hospital.address}</h5>
+          <p className='text-sm text-gray-600'>Rating: {hospital.rating}</p>
+          <div className='mt-2'>
+            <a role='button' href='#' className='text-white bg-purple-600 px-3 py-1 hover:bg-purple-400 rounded-md'>Read More</a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
   );
 };
 

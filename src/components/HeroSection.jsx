@@ -4,7 +4,7 @@ import video2 from "../assets/video2.mp4"
 const HeroSection = () => {
   return (
     <div className="flex flex-col items-center ">
-      <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide text-white">
+      <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide text-white mt-30">
         Discover The Best 
         <span className="bg-gradient-to-r from-orange-500 to-red-800 text-transparent bg-clip-text">{" "}HealthCare </span>
         for your 

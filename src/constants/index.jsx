@@ -12,10 +12,10 @@ import user5 from "../assets/user5.jpg";
 import user6 from "../assets/user6.jpg";
 
 export const navItems = [
-    { label: "Hospitals", href: "#" },
-    { label: "About Us", href: "#" },
-    { label: "Features", href: "#" },
-    { label: "Testimonials", href: "#" }
+    { label: "Hospitals", href: "/hospitals" },
+    { label: "About Us", href: "/About Us" },
+    { label: "Features", href: "/" },
+    { label: "Testimonials", href: "/" }
   ];
 
 
