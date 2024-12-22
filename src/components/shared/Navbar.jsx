@@ -6,6 +6,7 @@ import { User2 } from "lucide-react";
 import { Button } from "../ui/button";
 
 const Navbar = () => {
+  const user = false;
   return (
     <div className="bg-[#F9E6CF]">
       <div className="flex items-center justify-between  mx-auto max-w-7xl h-16">
@@ -16,57 +17,64 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-12">
           <ul className="flex font-Poppins font-medium items-center gap-5 text-[#543A14]">
-            <li>
+            <li className="hover:text-[#dba14a]">
               <Link>Home</Link>
             </li>
-            <li>
+            <li className="hover:text-[#dba14a]">
               <Link>Hospitals</Link>
             </li>
-            <li>
+            <li className="hover:text-[#dba14a]">
               <Link>Doctors</Link>
             </li>
-            <li>
+            <li className="hover:text-[#dba14a]">
               <Link>About Us</Link>
             </li>
           </ul>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Avatar className="cursor-pointer">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
-                />
-              </Avatar>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <div>
-                <div className="flex gap-4 space-y-2">
-                  <Avatar className="cursor-pointer">
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                  </Avatar>
-                  <div>
-                    <h4>Yash Shukla</h4>
-                    <p className="text-sm text-muted-foreground">
-                      i am a great person very best.
-                    </p>
+          {!user ? (
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="bg-[#FB4141] hover:bg-[#79f146]">Login</Button>
+              <Button className="bg-[#79f146] hover:bg-[#FB4141]">Signup</Button>
+            </div>
+          ) : (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                </Avatar>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div>
+                  <div className="flex gap-4 space-y-2">
+                    <Avatar className="cursor-pointer">
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                    </Avatar>
+                    <div>
+                      <h4>Yash Shukla</h4>
+                      <p className="text-sm text-muted-foreground">
+                        i am a great person very best.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col my-2 text-gray-600">
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <User2 />
+                      <Button variant="link">View Profile</Button>
+                    </div>
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <User2 />
+                      <Button variant="link">Logout</Button>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col my-2 text-gray-600">
-                  <div className="flex w-fit items-center gap-2 cursor-pointer">
-                    <User2 />
-                    <Button variant="link">View Profile</Button>
-                  </div>
-                  <div className="flex w-fit items-center gap-2 cursor-pointer">
-                    <User2 />
-                    <Button variant="link">Logout</Button>
-                  </div>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
       </div>
     </div>
