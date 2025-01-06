@@ -32,8 +32,19 @@ const Navbar = () => {
           </ul>
           {!user ? (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="bg-[#FB4141] hover:bg-[#79f146]">Login</Button>
-              <Button className="bg-[#79f146] hover:bg-[#FB4141]">Signup</Button>
+              <Link to="/login">
+                <Button
+                  variant="outline"
+                  className="bg-[#FB4141] hover:bg-[#79f146]"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-[#79f146] hover:bg-[#FB4141]">
+                  Signup
+                </Button>
+              </Link>
             </div>
           ) : (
             <Popover>
