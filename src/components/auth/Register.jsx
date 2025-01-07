@@ -10,11 +10,14 @@ import { DOCTOR_API_END_POINT } from "@/constants";
 import { HOSPITAL_API_END_POINT } from "@/constants";
 import axios from "axios";
 import { toast } from "sonner";
-// import { useDispatch } from "react-redux";
+import { Loader2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
 
 const Register = () => {
   const navigate = useNavigate()
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+const { loading } = useSelector(store=>store.auth)
   const [step, setStep] = useState(1);
   const [input, setInput] = useState({
     fullName: "",
@@ -80,7 +83,7 @@ const Register = () => {
     endpoint = HOSPITAL_API_END_POINT;
   }
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const res = await axios.post(`${endpoint}/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
@@ -93,7 +96,7 @@ const Register = () => {
       console.log(error);
       toast.error(error.response.data.message);
     } finally {
-      // dispatch(setLoading(false));
+      dispatch(setLoading(false));
     }
   
   };
@@ -366,9 +369,15 @@ const Register = () => {
               </Button>
             )}
             {step === 2 && (
-              <Button type="submit" className="bg-[#DF6D2D] hover:bg-[#9e5932]">
-                Submit
+              
+              <Button type="submit" className="w-full my-4 bg-[#DF6D2D] hover:bg-[#9e5932]">
+                {loading ? (
+                  <Loader2 className="animate-spin mr-2" />
+                ) : (
+                  "Register"
+                )}
               </Button>
+            
             )}
           </div>
         </form>

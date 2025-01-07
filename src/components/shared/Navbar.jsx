@@ -4,16 +4,24 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
 import { Button } from "../ui/button";
+import logo from '../../assets/logo.png'
 
 const Navbar = () => {
   const user = false;
   return (
     <div className="bg-[#F9E6CF]">
       <div className="flex items-center justify-between  mx-auto max-w-7xl h-16">
-        <div className="font-serif">
-          <h1 className="text-2xl font-bold text-[#69247C]">
-            Care<span className="text-[#F83002]"> Critic</span>
-          </h1>
+        <div className="font-serif flex">
+          <Link to="/">
+            <Button variant="outline">
+              <Avatar>
+                <AvatarImage  src={logo}/>
+              </Avatar>
+              <h1 className="text-2xl font-bold text-[#69247C]">
+                Care<span className="text-[#F83002]"> Critic</span>
+              </h1>
+            </Button>
+          </Link>
         </div>
         <div className="flex items-center gap-12">
           <ul className="flex font-Poppins font-medium items-center gap-5 text-[#543A14]">

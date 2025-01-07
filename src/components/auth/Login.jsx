@@ -10,9 +10,14 @@ import { USER_API_END_POINT } from "@/constants";
 import { DOCTOR_API_END_POINT } from "@/constants";
 import { HOSPITAL_API_END_POINT } from "@/constants";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux"
+import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { loading } = useSelector(store=>store.auth)
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -37,7 +42,7 @@ const Login = () => {
       }
 
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const res = await axios.post(`${endpoint}/login`, input, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -53,7 +58,7 @@ const Login = () => {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
-      // dispatch(setLoading(false));
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -122,11 +127,18 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
-          <Button type="submit" className="bg-[#DF6D2D] hover:bg-[#9e5932]">
-            Submit
-          </Button>
+          {loading ? (
+            <Button className="bg-[#DF6D2D] w-full my-4 hover:bg-[#9e5932]">
+              {" "}
+              <Loader2 className="mr-2 bg-[#DF6D2D] h-4 w-4 animate-spin" /> Please wait{" "}
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full my-4">
+              Login
+            </Button>
+          )}
           <span className="text-sm mx-12">
-            Already have an account?{" "}
+            Dont have an account?{" "}
             <Link to="/signup" className="text-[#F14A00]">
               SignUp
             </Link>
