@@ -1,5 +1,7 @@
 
+import FeatureSection from "./FeatureSection";
 import HeroSection from "./HeroSection";
+import Footer from "./shared/Footer";
 import Navbar from "./shared/Navbar";
 
 
@@ -9,6 +11,8 @@ const Home = () => {
     <div>
       <Navbar />
       <HeroSection />
+      <FeatureSection />
+      <Footer />
     </div>
   );
 };
