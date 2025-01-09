@@ -26,10 +26,10 @@ const Navbar = () => {
         <div className="flex items-center gap-12">
           <ul className="flex font-Poppins font-medium items-center gap-5 text-[#543A14]">
             <li className="hover:text-[#dba14a]">
-              <Link>Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li className="hover:text-[#dba14a]">
-              <Link>Hospitals</Link>
+              <Link to="/hospital">Hospitals</Link>
             </li>
             <li className="hover:text-[#dba14a]">
               <Link>Doctors</Link>
