@@ -11,7 +11,7 @@ import { DOCTOR_API_END_POINT } from "@/constants";
 import { HOSPITAL_API_END_POINT } from "@/constants";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux"
-import { setLoading } from "@/redux/authSlice";
+import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
@@ -49,8 +49,8 @@ const Login = () => {
       });
       console.log(res);
       if (res.data.success) {
-        console.log("User Data:", res.data.user);
-        // dispatch(setUser(res.data.user));
+        console.log("User Data:", res.data.data);
+        dispatch(setUser(res.data.data));
         navigate("/");
         toast.success(res.data.message);
       }

@@ -1,34 +1,59 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import ReviewTable from "./ReviewTable";
+import Navbar from "./shared/Navbar";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Contact, Mail, Pen } from "lucide-react";
+// import { Badge } from "./ui/badge";
+// import { Label } from "./ui/label";
+// import { useState } from "react";
+// import { useSelector } from "react-redux";
+
+// const skills = ["Html", "Css", "Javascript", "Reactjs"]
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/api/v1/users/profile', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUser(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUser();
-  }, []);
-
+  // useGetAppliedJobs()
+  // const [open, setOpen] = useState(false);
+  // const { user } = useSelector((store) => store.auth);
   return (
-    <div className='w-full max-w-sm mx-auto mt-10 p-6 rounded-md shadow-md'>
-      {user ? (
-        <div>
-          <h2 className='text-3xl font-semibold'>Welcome, {user.fullName}</h2>
-          <p>Email: {user.email}</p>
+    <div className="bg-[#8FD14F]">
+      <Navbar />
+      <div className="max-w-4xl mx-auto bg-[#D84040] text-white border border-gray-200 rounded-2xl my-5 p-8">
+        <div className="flex justify-between">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src="" alt="profile" />
+            </Avatar>
+            <div>
+              <h1 className="font-medium text-xl">Full Name</h1>
+              <p>bio</p>
+            </div>
+          </div>
+          <Button
+            // onClick={() => setOpen(true)}
+            className="text-right"
+            variant="outline"
+          >
+            <Pen />
+          </Button>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+        <div className="my-5">
+          <div className="flex items-center gap-3 my-2">
+            <Mail />
+            <span>email</span>
+          </div>
+          <div className="flex items-center gap-3 my-2">
+            <Contact />
+            <span>9650802602</span>
+          </div>
+        </div>
+
+        
+      </div>
+      <div className="max-w-4xl mx-auto rounded-2xl">
+        <ReviewTable />
+       
+      </div>
+      {/* <UpdateProfileDialog open={open} setOpen={setOpen} /> */}
     </div>
   );
 };

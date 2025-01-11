@@ -4,7 +4,7 @@ const authSlice = createSlice({
     name:"auth",
     initialState:{
         loading:false,
-        // user:null
+        user:null
     },
     reducers:{
         // actions
@@ -14,10 +14,10 @@ const authSlice = createSlice({
             state.loading = action.payload;
             // console.log("inside reducers");
         },
-        // setUser:(state, action) => {
-        //     // console.log("Payload received in setUser:", action.payload);
-        //     state.user = action.payload;
-        // }
+        setUser:(state, action) => {
+            // console.log("Payload received in setUser:", action.payload);
+            state.user = action.payload;
+        }
     }
 });
 export const {setLoading, setUser} = authSlice.actions;
