@@ -1,17 +1,15 @@
-import ReviewTable from "./ReviewTable";
 import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { Contact, Mail, Pen } from "lucide-react";
+import { Award, Contact, GraduationCap, Hospital, Mail, Pen } from "lucide-react";
 import UpdateProfileDialog from "./UpdateProfileDialog";
-// import { Badge } from "./ui/badge";
-// import { Label } from "./ui/label";
+
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 
-const UserProfile = () => {
-
+const DoctorProfile = () => {
+  
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   return (
@@ -21,11 +19,11 @@ const UserProfile = () => {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={user?.user?.profilePhoto} alt="profile" />
+              <AvatarImage src="" alt="profile" />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">{user?.user?.fullName}</h1>
-              <p>{user?.user?.userName}</p>
+              <h1 className="font-medium text-xl">{user?.doctor?.name}</h1>
+              <p>{user?.doctor?.experienceInYears}+ yrs experience</p>
             </div>
           </div>
           <Button
@@ -39,23 +37,33 @@ const UserProfile = () => {
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <Mail />
-            <span>{user?.user?.email}</span>
+            <span>{user?.doctor?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Contact />
-            <span>{user?.user?.contactNumber}</span>
+            <span>{user?.doctor?.contactNumber}</span>
           </div>
+          <div className="flex items-center gap-3 my-2">
+          <Award />
+            <span>{user?.doctor?.specialty}</span>
+          </div>
+          <div className="flex items-center gap-3 my-2">
+          <GraduationCap />
+            <span>{user?.doctor?.qualification}</span>
+          </div>
+          <div className="flex items-center gap-3 my-2">
+          <Hospital />
+            <span>{user?.doctor?.worksIn}</span>
+          </div>
+
         </div>
 
         
       </div>
-      <div className="max-w-4xl mx-auto rounded-2xl">
-        <ReviewTable />
-       
-      </div>
+
       <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 };
 
-export default UserProfile;
+export default DoctorProfile;

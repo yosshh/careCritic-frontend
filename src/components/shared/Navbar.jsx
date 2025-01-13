@@ -1,22 +1,35 @@
 import { Link } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-// import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
 import { Button } from "../ui/button";
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const {user} = useSelector(store=> store.auth)
+  const { user } = useSelector((store) => store.auth); // Access user and role from Redux
+
+  // Determine profile route based on user role
+  console.log("Redux user object:", user);
+
+  const getProfileRoute = () => {
+    const role = user?.doctor?.role || user?.role; // Adjust this based on your structure
+    console.log("Determined Role:", role); // Debug log
+  
+    if (role === "Doctor") return "/doctorProfile";
+    if (role === "Hospital") return "/hospitalProfile";
+    return "/userProfile";
+  };
+  
+
   return (
     <div className="bg-[#F9E6CF]">
-      <div className="flex items-center justify-between  mx-auto max-w-7xl h-16">
+      <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
         <div className="font-serif flex">
           <Link to="/">
             <Button variant="outline">
               <Avatar>
-                <AvatarImage  src={logo}/>
+                <AvatarImage src={logo} />
               </Avatar>
               <h1 className="text-2xl font-bold text-[#69247C]">
                 Care<span className="text-[#F83002]"> Critic</span>
@@ -75,16 +88,18 @@ const Navbar = () => {
                       />
                     </Avatar>
                     <div>
-                      <h4>Yash Shukla</h4>
+                      <h4>{user.name || "Guest"}</h4>
                       <p className="text-sm text-muted-foreground">
-                        i am a great person very best.
+                        Welcome to Care Critic!
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-col my-2 text-gray-600">
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <User2 />
-                      <Button variant="link"><Link to="/userProfile">View Profile</Link></Button>
+                      <Button variant="link">
+                        <Link to={getProfileRoute()}>View Profile</Link>
+                      </Button>
                     </div>
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <User2 />

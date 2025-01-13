@@ -4,8 +4,9 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Hospitals from './components/Hospitals';
 import Doctors from './components/Doctors'
-import Profile from './components/UserProfile';
 import HospitalDescription from './components/HospitalDescription';
+import UserProfile from './components/UserProfile'
+import DoctorProfile from './components/DoctorProfile';
 
 
 const appRouter = createBrowserRouter([
@@ -35,7 +36,15 @@ const appRouter = createBrowserRouter([
   },
   {
     path: '/userProfile',
-    element: <Profile />
+    element: <UserProfile />
+  },
+  {
+    path: '/doctorProfile',
+    element: <DoctorProfile />
+  },
+  {
+    path: '/userProfile',
+    element: <UserProfile />
   }
 ])
 

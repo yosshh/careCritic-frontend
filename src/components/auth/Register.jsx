@@ -168,12 +168,12 @@ const { loading } = useSelector(store=>store.auth)
                 />
               </div>
               <div>
-                <Label>Phone Number</Label>
+                <Label>Contact Number</Label>
                 <Input
                   type="text"
-                  name="phoneNumber"
-                  placeholder="Phone Number"
-                  value={input.phoneNumber}
+                  name="contactNumber"
+                  placeholder="contact Number"
+                  value={input.contactNumber}
                   onChange={changeEventHandler}
                 />
               </div>

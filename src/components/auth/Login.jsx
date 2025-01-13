@@ -133,7 +133,7 @@ const Login = () => {
               <Loader2 className="mr-2 bg-[#DF6D2D] h-4 w-4 animate-spin" /> Please wait{" "}
             </Button>
           ) : (
-            <Button type="submit" className="w-full my-4">
+            <Button type="submit" className="w-full my-4 bg-[#DF6D2D] hover:bg-[#9e5932]">
               Login
             </Button>
           )}
