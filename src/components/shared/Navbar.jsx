@@ -1,24 +1,60 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { User2 } from "lucide-react";
 import { Button } from "../ui/button";
 import logo from '../../assets/logo.png';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "sonner";
+import { setLogout } from "@/redux/authSlice";
+import { USER_API_END_POINT } from "@/constants";
+import { DOCTOR_API_END_POINT } from "@/constants";
+import { HOSPITAL_API_END_POINT } from "@/constants";
 
 const Navbar = () => {
-  const { user } = useSelector((store) => store.auth); // Access user and role from Redux
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user } = useSelector((store) => store.auth); 
+  const { doctor } = useSelector((store)=> store.auth)
 
   // Determine profile route based on user role
   console.log("Redux user object:", user);
 
   const getProfileRoute = () => {
-    const role = user?.doctor?.role || user?.role; // Adjust this based on your structure
+    const role = user?.doctor?.role || user?.user?.role || user?.hospital?.role
     console.log("Determined Role:", role); // Debug log
   
     if (role === "Doctor") return "/doctorProfile";
     if (role === "Hospital") return "/hospitalProfile";
     return "/userProfile";
+  };
+
+  let endpoint = USER_API_END_POINT;
+
+  if (user?.doctor?.role === "Doctor") {
+    endpoint = DOCTOR_API_END_POINT;
+  } else if (user?.hospital?.role === "Hospital") {
+    endpoint = HOSPITAL_API_END_POINT;
+  }
+  
+
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${endpoint}/logout`, {
+        withCredentials: true,
+      });
+      console.log("logout successfull", res.data);
+
+      if (res.data.success) {
+        dispatch(setLogout()); 
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
   
 
@@ -52,64 +88,65 @@ const Navbar = () => {
               <Link>About Us</Link>
             </li>
           </ul>
-          {!user ? (
-            <div className="flex items-center gap-2">
-              <Link to="/login">
-                <Button
-                  variant="outline"
-                  className="bg-[#FB4141] hover:bg-[#79f146]"
-                >
-                  Login
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-[#79f146] hover:bg-[#FB4141]">
-                  Signup
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Avatar className="cursor-pointer">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                </Avatar>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div>
-                  <div className="flex gap-4 space-y-2">
-                    <Avatar className="cursor-pointer">
-                      <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt="@shadcn"
-                      />
-                    </Avatar>
-                    <div>
-                      <h4>{user.name || "Guest"}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Welcome to Care Critic!
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-2 text-gray-600">
-                    <div className="flex w-fit items-center gap-2 cursor-pointer">
-                      <User2 />
-                      <Button variant="link">
-                        <Link to={getProfileRoute()}>View Profile</Link>
-                      </Button>
-                    </div>
-                    <div className="flex w-fit items-center gap-2 cursor-pointer">
-                      <User2 />
-                      <Button variant="link">Logout</Button>
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-          )}
+          {(!user && !doctor) ? (
+  <div className="flex items-center gap-2">
+    <Link to="/login">
+      <Button
+        variant="outline"
+        className="bg-[#FB4141] hover:bg-[#79f146]"
+      >
+        Login
+      </Button>
+    </Link>
+    <Link to="/signup">
+      <Button className="bg-[#79f146] hover:bg-[#FB4141]">
+        Signup
+      </Button>
+    </Link>
+  </div>
+) : (
+  <Popover>
+    <PopoverTrigger asChild>
+      <Avatar className="cursor-pointer">
+        <AvatarImage
+          src={user?.profilePhoto || doctor?.profilePhoto || "https://github.com/shadcn.png"}
+          alt="Profile Photo"
+        />
+      </Avatar>
+    </PopoverTrigger>
+    <PopoverContent className="w-80">
+      <div>
+        <div className="flex gap-4 space-y-2">
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={user?.profilePhoto || doctor?.profilePhoto || "https://github.com/shadcn.png"}
+              alt="Profile Photo"
+            />
+          </Avatar>
+          <div>
+            <h4>{user?.name || doctor?.name || "Guest"}</h4>
+            <p className="text-sm text-muted-foreground">
+              Welcome to Care Critic!
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col my-2 text-gray-600">
+          <div className="flex w-fit items-center gap-2 cursor-pointer">
+            <User2 />
+            <Button variant="link">
+              <Link to={getProfileRoute()}>View Profile</Link>
+            </Button>
+          </div>
+          <div className="flex w-fit items-center gap-2 cursor-pointer">
+            <User2 />
+            <Button variant="link" onClick={logoutHandler}>Logout</Button>
+          </div>
+        </div>
+      </div>
+    </PopoverContent>
+  </Popover>
+)}
+
         </div>
       </div>
     </div>

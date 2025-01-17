@@ -3,7 +3,7 @@ import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Contact, Mail, Pen } from "lucide-react";
-import UpdateProfileDialog from "./UpdateProfileDialog";
+import UpdateUserProfileDialog from "./UpdateUserProfileDialog";
 // import { Badge } from "./ui/badge";
 // import { Label } from "./ui/label";
 import { useState } from "react";
@@ -21,11 +21,11 @@ const UserProfile = () => {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={user?.user?.profilePhoto} alt="profile" />
+              <AvatarImage src={user?.profilePhoto} alt="profile" />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">{user?.user?.fullName}</h1>
-              <p>{user?.user?.userName}</p>
+              <h1 className="font-medium text-xl">{user?.fullName}</h1>
+              <p>{user?.userName}</p>
             </div>
           </div>
           <Button
@@ -39,11 +39,11 @@ const UserProfile = () => {
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <Mail />
-            <span>{user?.user?.email}</span>
+            <span>{user?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Contact />
-            <span>{user?.user?.contactNumber}</span>
+            <span>{user?.contactNumber}</span>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ const UserProfile = () => {
         <ReviewTable />
        
       </div>
-      <UpdateProfileDialog open={open} setOpen={setOpen} />
+      <UpdateUserProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 };

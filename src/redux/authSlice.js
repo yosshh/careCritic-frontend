@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
-  user: null, // Will store the user object with fields like role, name, etc.
+  user: null,
   error: null,
+  doctor: null,
 };
 
 const authSlice = createSlice({
@@ -14,19 +15,32 @@ const authSlice = createSlice({
       state.loading = action.payload;
     },
     setUser: (state, action) => {
-      state.user = action.payload; // Payload should be the user object
-      state.error = null; // Clear any errors
+      const userData = action.payload;
+
+      // Explicitly set null if payload is null
+      state.user = userData?.user || userData || null;
+      state.error = null;
     },
+    setDoctor: (state, action) => {
+      const doctorData = action.payload;
+      console.log("Updated doctor:", doctorData);
+    
+      // Assuming doctor data is always a flat object
+      state.doctor = doctorData?.doctor || doctorData || null;
+      state.error = null;
+    },    
     setError: (state, action) => {
-      state.error = action.payload; // Payload should be the error message
+      state.error = action.payload;
     },
-    logout: (state) => {
+    setLogout: (state) => {
+      // Clear all relevant state fields
       state.user = null;
+      state.doctor = null;
       state.loading = false;
       state.error = null;
     },
   },
 });
 
-export const { setLoading, setUser, setError, logout } = authSlice.actions;
+export const { setLoading, setUser, setError, setLogout, setDoctor } = authSlice.actions;
 export default authSlice.reducer;

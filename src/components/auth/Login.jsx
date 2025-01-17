@@ -11,7 +11,7 @@ import { DOCTOR_API_END_POINT } from "@/constants";
 import { HOSPITAL_API_END_POINT } from "@/constants";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux"
-import { setLoading, setUser } from "@/redux/authSlice";
+import { setLoading, setUser, setDoctor } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
@@ -32,15 +32,15 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log(input);
-
+  
     let endpoint = USER_API_END_POINT;
-      
-      if (input.role === "Doctor") {
-        endpoint = DOCTOR_API_END_POINT;
-      } else if (input.role === "Hospital") {
-        endpoint = HOSPITAL_API_END_POINT;
-      }
-
+    
+    if (input.role === "Doctor") {
+      endpoint = DOCTOR_API_END_POINT;
+    } else if (input.role === "Hospital") {
+      endpoint = HOSPITAL_API_END_POINT;
+    }
+  
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${endpoint}/login`, input, {
@@ -50,8 +50,16 @@ const Login = () => {
       console.log(res);
       if (res.data.success) {
         console.log("User Data:", res.data.data);
-        dispatch(setUser(res.data.data));
-        navigate("/");
+        if (input.role === "Doctor") {
+          dispatch(setDoctor(res.data.data));
+          navigate("/doctorProfile");
+        } else if (input.role === "Hospital") {
+          // dispatch(setHospital(res.data.data));
+          navigate("/hospital/profile");
+        } else {
+          dispatch(setUser(res.data.data));
+          navigate("/userProfile");
+        }
         toast.success(res.data.message);
       }
     } catch (error) {

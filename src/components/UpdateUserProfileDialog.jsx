@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 import PropTypes from 'prop-types'
 
 
-const UpdateProfileDialog = ({ open, setOpen }) => {
+const UpdateUserProfileDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((store) => store.auth);
     const dispatch = useDispatch();
@@ -161,10 +161,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     );
   };
 
-  UpdateProfileDialog.propTypes = {
+  UpdateUserProfileDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
 };
   
-  export default UpdateProfileDialog;
+  export default UpdateUserProfileDialog;
   
