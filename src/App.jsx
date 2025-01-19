@@ -27,8 +27,12 @@ const appRouter = createBrowserRouter([
     element: <Hospitals />
   },
   {
-    path: '/description/:id',
+    path: '/description/hospital/:id',
     element: <HospitalDescription />
+  },
+  {
+    path: '/description/doctor/:id',
+    element: <DoctorProfile />
   },
   {
     path: '/doctors',

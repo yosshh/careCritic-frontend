@@ -53,23 +53,24 @@ const { loading } = useSelector(store=>store.auth)
     const formData = new FormData(); //formdata object
     formData.append("fullName", input.fullName);
     formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("name", input.name);
     formData.append("experienceInYears", input.experienceInYears);
     formData.append("contactNumber", input.contactNumber);
     formData.append("qualification", input.qualification);
     formData.append("password", input.password);
     formData.append("userName", input.userName);
-    formData.append("worksIn", input.worksIn);
     formData.append("address", input.address);
     formData.append("specializedIn", input.specializedIn);
     formData.append("hospitalName", input.hospitalName);
     formData.append("specialty", input.specialty);
     formData.append("role", input.role);
+    console.log("input",input);
+
+
     if (input.file) {
       formData.append("file", input.file);
       console.log("Appended file:", input.file);
     }
+    // formData.append("specializedIn", JSON.stringify(input.specializedIn));
 
     formData.forEach((value, key) => {
       console.log(key + ": " + value);
@@ -205,9 +206,9 @@ const { loading } = useSelector(store=>store.auth)
               <Label>Name</Label>
               <Input
                 type="text"
-                name="name"
-                placeholder="Name"
-                value={input.name}
+                name="fullName"
+                placeholder="fullName"
+                value={input.fullName}
                 onChange={changeEventHandler}
               />
               <div>
@@ -261,12 +262,12 @@ const { loading } = useSelector(store=>store.auth)
                 />
               </div>
               <div>
-                <Label>Works In</Label>
+                <Label>Password</Label>
                 <Input
-                  type="text"
-                  name="worksIn"
-                  placeholder="worksIn"
-                  value={input.worksIn}
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={input.password}
                   onChange={changeEventHandler}
                 />
               </div>
@@ -308,30 +309,20 @@ const { loading } = useSelector(store=>store.auth)
               <div>
                 <Label>Contact Number</Label>
                 <Input
-                  type="number"
-                  name="ContactNumber"
+                  type="text"
+                  name="contactNumber"
                   placeholder="98XXXXXX"
                   value={input.contactNumber}
                   onChange={changeEventHandler}
                 />
               </div>
               <div>
-                <Label>hospital Email</Label>
+                <Label>Email</Label>
                 <Input
                   type="email"
                   name="email"
-                  placeholder="hospital@gmail.com"
+                  placeholder="doctor@gmail.com"
                   value={input.email}
-                  onChange={changeEventHandler}
-                />
-              </div>
-              <div>
-                <Label>Contact Number</Label>
-                <Input
-                  type="number"
-                  name="ContactNumber"
-                  placeholder="98XXXXXX"
-                  value={input.hospitalName}
                   onChange={changeEventHandler}
                 />
               </div>
@@ -339,10 +330,30 @@ const { loading } = useSelector(store=>store.auth)
                 <Label>Specialises In</Label>
                 <Input
                   type="text"
-                  name="specialisesIn"
+                  name="specializedIn"
                   placeholder="Cardio, Neuro,...."
                   value={input.specializedIn}
                   onChange={changeEventHandler}
+                />
+              </div>
+              <div>
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={input.password}
+                  onChange={changeEventHandler}
+                />
+              </div>
+              <div className="flex items-center gap-2 my-4">
+                <Label>Hospital image</Label>
+                <Input
+                  accept="image/*"
+                  name="file"
+                  type="file"
+                  className="cursor-pointer"
+                  onChange={changeFileHandler}
                 />
               </div>
             </div>
