@@ -34,7 +34,7 @@ const Hospital = ({ hospital }) => {
 
         {/* Body */}
         <p className="text-gray-700 mt-2">
-          Specialized in cardiology, neurology, and orthopedic treatments.
+          Specialized in <span>{hospital?.specializedIn}</span> treatments.
         </p>
 
         {/* Footer */}
@@ -52,7 +52,7 @@ Hospital.propTypes = {
     hospitalName: PropTypes.string.isRequired,
     address: PropTypes.string,
     hospitalImage: PropTypes.string,
-    // experienceInYears: PropTypes.number,
+    specializedIn: PropTypes.array,
     _id: PropTypes.string.isRequired,
   }).isRequired,
 };

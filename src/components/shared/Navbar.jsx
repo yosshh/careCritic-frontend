@@ -124,10 +124,7 @@ const Navbar = () => {
             />
           </Avatar>
           <div>
-            <h4>{user?.name || doctor?.name || "Guest"}</h4>
-            <p className="text-sm text-muted-foreground">
-              Welcome to Care Critic!
-            </p>
+            <h4>{user?.fullName || doctor?.fullName || "Guest"}</h4>
           </div>
         </div>
         <div className="flex flex-col my-2 text-gray-600">
