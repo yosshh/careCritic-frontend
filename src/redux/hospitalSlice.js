@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const hospitalSlice = createSlice({
     name:"hospital",
     initialState:{
-        // singleDoctor:null,
+        singleHospital:null,
         hospitals: [],
         // searchCompanyByText: "",
     },
     reducers:{
         // actions
-        // setSingleDoctor:(state,action)=> {
-        //     state.singleDoctor = action.payload;
-        // },
+        setSingleHospital:(state,action)=> {
+            state.singleHospital = action.payload;
+        },
         setAllHospitals:(state, action)=> {
             state.hospitals = action.payload;
         },
@@ -20,5 +20,5 @@ const hospitalSlice = createSlice({
         // }
     }
 });
-export const {setAllHospitals} = hospitalSlice.actions;
+export const {setAllHospitals, setSingleHospital} = hospitalSlice.actions;
 export default hospitalSlice.reducer

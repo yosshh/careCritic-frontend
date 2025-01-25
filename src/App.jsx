@@ -7,6 +7,7 @@ import Doctors from './components/Doctors'
 import HospitalDescription from './components/HospitalDescription';
 import UserProfile from './components/UserProfile'
 import DoctorProfile from './components/DoctorProfile';
+import DoctorCard from './components/DoctorCard';
 
 
 const appRouter = createBrowserRouter([
@@ -32,7 +33,7 @@ const appRouter = createBrowserRouter([
   },
   {
     path: '/description/doctor/:id',
-    element: <DoctorProfile />
+    element: <DoctorCard />
   },
   {
     path: '/doctors',

@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 const doctorSlice = createSlice({
     name:"doctor",
     initialState:{
-        // singleDoctor:null,
+        singleDoctor:null,
         doctors: [],
         // searchCompanyByText: "",
     },
     reducers:{
         // actions
-        // setSingleDoctor:(state,action)=> {
-        //     state.singleDoctor = action.payload;
-        // },
+        setSingleDoctor:(state,action)=> {
+            state.singleDoctor = action.payload;
+        },
         setAllDoctors:(state, action)=> {
             state.doctors = action.payload;
         },
@@ -20,5 +20,5 @@ const doctorSlice = createSlice({
         // }
     }
 });
-export const {setAllDoctors} = doctorSlice.actions;
+export const {setAllDoctors, setSingleDoctor} = doctorSlice.actions;
 export default doctorSlice.reducer

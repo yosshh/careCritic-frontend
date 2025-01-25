@@ -329,12 +329,11 @@ const { loading } = useSelector(store=>store.auth)
               <div>
                 <Label>Specialises In</Label>
                 <Input
-                  type="text"
                   name="specializedIn"
                   placeholder="Cardio, Neuro,...."
                   value={input.specializedIn.join(",")}
                   onChange={(e) =>
-                      setInput({ ...input, skills: e.target.value.split(",") })
+                      setInput({ ...input, specializedIn: e.target.value.split(",") })
                     }
                     className="col-span-3"
                 />
