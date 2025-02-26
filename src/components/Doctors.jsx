@@ -2,10 +2,14 @@ import Navbar from "./shared/Navbar";
 import Doctor from "./Doctor";
 import FilterCardForDoctor from "./FilterCardForDoctor";
 import { useSelector } from "react-redux";
+import useGetAllDoctors from "@/hooks/useGetAllDoctors";
 
 const Doctors = () => {
   // Extracting doctors from the Redux store
-  const { doctors = [] } = useSelector((store) => store.doctor);
+  // const { doctors = [] } = useSelector((store) => store.doctor);
+  useGetAllDoctors();
+  const doctors = useSelector((state) => state.doctor.doctors);
+  console.log("Doctors in Redux:", doctors);
 
   return (
     <div className="bg-[#FEF9E1] min-h-screen">

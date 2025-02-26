@@ -5,15 +5,17 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Award, Contact, GraduationCap, Mail } from "lucide-react";
 import Navbar from "./shared/Navbar";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setSingleDoctor } from "@/redux/doctorSlice";
 import axios from "axios";
 import { DOCTOR_API_END_POINT, APPOINTMENT_API_END_POINT } from "@/constants";
 import { toast } from "sonner";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
+import { Button } from "./ui/button";
 
 const DoctorCard = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { singleDoctor } = useSelector((store) => store.doctor);
   const { user } = useSelector((store) => store.auth);
@@ -35,13 +37,16 @@ const DoctorCard = () => {
         );
         if (res.data.success) {
           dispatch(setSingleDoctor(res.data.data));
-          const isAlreadyBooked = res.data.data.appointments?.some(
-            (appointment) => appointment.user === user?._id
+
+          // Check if the user has already booked an appointment
+          const isAlreadyBooked = res.data.data?.appointments?.some(
+            (appointments) => appointments.user === user?._id
           );
-          setIsBooked(isAlreadyBooked || false);
+          setIsBooked(isAlreadyBooked);
         }
       } catch (error) {
         console.log(error);
+        toast.error("Failed to load doctor details.");
       }
     };
     fetchSingleDoctor();
@@ -71,13 +76,16 @@ const DoctorCard = () => {
       );
 
       if (res.data.success) {
-        setIsBooked(true);
-        const updatedSingleDoctor = {
-          ...singleDoctor,
-          appointments: [...singleDoctor.appointments, { user: user?._id }],
-        };
-        dispatch(setSingleDoctor(updatedSingleDoctor));
-        toast.success(res.data.message);
+        // Fetch latest doctor data after successful booking
+        const updatedDoctorRes = await axios.get(
+          `${DOCTOR_API_END_POINT}/getDoctors/${doctorId}`,
+          { withCredentials: true }
+        );
+        if (updatedDoctorRes.data.success) {
+          dispatch(setSingleDoctor(updatedDoctorRes.data.data));
+          setIsBooked(true);
+          toast.success("Appointment booked successfully.");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +107,10 @@ const DoctorCard = () => {
               <p>{singleDoctor?.experienceInYears}+ yrs experience</p>
             </div>
           </div>
-          
+          <Button
+          onClick={()=> navigate(`/reviews/doctor/${doctorId}}`)}
+        >Reviews
+        </Button>
         </div>
 
         {/* Doctor details */}
@@ -120,65 +131,65 @@ const DoctorCard = () => {
             <GraduationCap />
             <span>{singleDoctor?.qualification}</span>
           </div>
-
         </div>
+
         {/* Booking Details */}
-        <div className="p-4 bg-[#FFF6DA] rounded-md23 z-20 ">
-            <h4 className="text-lg font-semibold text-[#B82132] mb-4">
-              Book Appointment
-            </h4>
+        <div className="p-4 bg-[#FFF6DA] rounded-md shadow-lg">
+          <h4 className="text-lg font-semibold text-[#B82132] mb-4">
+            Book Appointment
+          </h4>
 
-            {/* Date Picker */}
-            <div className="mb-3">
-              <label className="block text-sm mb-1 text-[#a01b2b72]">
-                Select Date:
-              </label>
-              <DatePicker
-                selected={date}
-                onChange={(selectedDate) => setDate(selectedDate)}
-                className="w-full p-2 rounded-md border bg-white text-gray-900"
-                placeholderText="Pick a date"
-                minDate={new Date()} // Prevent selecting past dates
-              />
-            </div>
-
-            {/* Time Picker */}
-            <div className="mb-3">
-              <label className="block text-sm mb-1 text-[#a01b2b72]">
-                Select Time:
-              </label>
-              <TimePicker
-                value={timeSlot}
-                onChange={(selectedTime) => setTimeSlot(selectedTime)}
-                className="w-full p-2 rounded-md border bg-white text-gray-900"
-                disableClock={true} // Removes the clock UI
-              />
-            </div>
-
-            {/* Reason Input */}
-            <div className="mb-3">
-              <label className="block text-sm mb-1 text-[#a01b2b72]">
-                Reason for Appointment:
-              </label>
-              <input
-                type="text"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                className="w-full p-2 rounded-md border bg-white text-gray-900"
-                placeholder="Enter a reason"
-              />
-            </div>
-
-            <button
-              onClick={bookAppointmentHandler}
-              disabled={isBooked}
-              className={`w-full p-2 text-white rounded-md ${
-                isBooked ? "bg-gray-600 cursor-not-allowed" : "bg-[#FFA09B]"
-              }`}
-            >
-              {isBooked ? "Already Booked" : "Book Appointment"}
-            </button>
+          {/* Date Picker */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1 text-[#a01b2b72]">
+              Select Date:
+            </label>
+            <DatePicker
+              selected={date}
+              onChange={(selectedDate) => setDate(selectedDate)}
+              className="w-full p-2 rounded-md border bg-white text-gray-900"
+              placeholderText="Pick a date"
+              minDate={new Date()} // Prevent selecting past dates
+            />
           </div>
+
+          {/* Time Picker */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1 text-[#a01b2b72]">
+              Select Time:
+            </label>
+            <TimePicker
+              value={timeSlot}
+              onChange={(selectedTime) => setTimeSlot(selectedTime)}
+              className="w-full p-2 rounded-md border bg-white text-gray-900"
+              disableClock={true} // Removes the clock UI
+            />
+          </div>
+
+          {/* Reason Input */}
+          <div className="mb-3">
+            <label className="block text-sm mb-1 text-[#a01b2b72]">
+              Reason for Appointment:
+            </label>
+            <input
+              type="text"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              className="w-full p-2 rounded-md border bg-white text-gray-900"
+              placeholder="Enter a reason"
+            />
+          </div>
+
+          <button
+            onClick={isBooked ? null : bookAppointmentHandler}
+            disabled={isBooked}
+            className={`w-full p-2 text-white rounded-md ${
+              isBooked ? "bg-gray-600 cursor-not-allowed" : "bg-[#FFA09B]"
+            }`}
+          >
+            {isBooked ? "Already Booked" : "Book Appointment"}
+          </button>
+        </div>
       </div>
     </div>
   );

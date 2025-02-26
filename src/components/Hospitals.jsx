@@ -2,11 +2,16 @@ import FilterCard from "./FilterCard";
 import Navbar from "./shared/Navbar";
 import Hospital from "./Hospital";
 import { useSelector } from "react-redux";
+import useGetAllHospitals from "@/hooks/useGetAllHospitals";
 
 // const hospitalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const Hospitals = () => {
-  const { hospitals = [] } = useSelector((store) => store.hospital);
+
+  useGetAllHospitals()
+  const hospitals = useSelector((state)=> state.hospital.hospitals)
+  console.log("Hospitals in redux", hospitals);
+  // const { hospitals = [] } = useSelector((store) => store.hospital);
   return (
     <div className="bg-[#FEF9E1] min-h-screen">
       <Navbar />

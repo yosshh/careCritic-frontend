@@ -40,7 +40,7 @@ const Hospital = ({ hospital }) => {
         {/* Footer */}
         <div className='flex justify-between items-center mt-4'>
           <Button className='bg-[#69247C] hover:bg-[#b664cc] text-white' onClick={()=> navigate(`/description/hospital/${hospital?._id}`)}>Details</Button>
-          <Button className="bg-[#F83002] hover:bg-[#eb5a64f6] text-white px-6 py-2">View Hospital</Button>
+          <Button className="bg-[#F83002] hover:bg-[#eb5a64f6] text-white px-6 py-2" onClick={()=> navigate(`/reviews/hospital/${hospital?._id}`)}>Reviews</Button>
         </div>
       </div>
     </div>
