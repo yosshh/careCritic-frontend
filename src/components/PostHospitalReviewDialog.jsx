@@ -5,51 +5,51 @@ import { Button } from './ui/button'
 import { Loader2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { REVIEW_API_END_POINT, DOCTOR_API_END_POINT } from '@/constants'
+import { REVIEW_API_END_POINT,HOSPITAL_API_END_POINT } from '@/constants'
 import axios from 'axios'
-import { setSingleDoctor } from '@/redux/doctorSlice'
+import { setSingleHospital } from '@/redux/hospitalSlice'
 import { toast } from 'sonner'
 import PropTypes from 'prop-types'
 import { useParams } from "react-router-dom";
 
-const PostReviewDialog = ({ open, setOpen }) => {
+const PostHospitalReviewDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
-    const { singleDoctor } = useSelector((store) => store.doctor); 
+    const { singleHospital } = useSelector((store) => store.hospital); 
     const { user } = useSelector((store) => store.auth.user);
     console.log(user,"user");
     
     const dispatch = useDispatch();
     const params = useParams();
-    const doctorId = params.id;
+    const hospitalId = params.id;
 //     console.log("Doctor in Redux State:", singleDoctor);
 // console.log("Single Doctor:", singleDoctor);
 // console.log("Doctor ID:", singleDoctor?._id);
 
 
 useEffect(() => {
-  const fetchSingleDoctor = async () => {
+  const fetchSingleHospital = async () => {
     try {
       if (!user) {
         console.log("User not logged in, skipping API call.");
         return;
       }
 
-      const res = await axios.get(`${DOCTOR_API_END_POINT}/getDoctors/${doctorId}`, {
+      const res = await axios.get(`${HOSPITAL_API_END_POINT}/getHospital/${hospitalId}`, {
         headers: { Authorization: `Bearer ${user?.token}` },
         withCredentials: true, 
       });
 
       // console.log("API Response:", res.data);
       if (res.data.success) {
-        dispatch(setSingleDoctor(res.data.data));
+        dispatch(setSingleHospital(res.data.data));
       }
     } catch (error) {
       console.error("Error fetching doctor:", error);
     }
   };
 
-  fetchSingleDoctor();
-}, [doctorId, dispatch, user]);
+  fetchSingleHospital();
+}, [hospitalId, dispatch, user]);
 
   
     const [input, setInput] = useState({
@@ -75,7 +75,7 @@ useEffect(() => {
       try {
         setLoading(true);
         const res = await axios.put(
-          `${REVIEW_API_END_POINT}/doctor/${singleDoctor?._id}`,
+          `${REVIEW_API_END_POINT}/hospital/${singleHospital?._id}`,
           newReview,
           {
             headers: { "Content-Type": "application/json" , }, 
@@ -85,11 +85,11 @@ useEffect(() => {
 
         if (res.data.success) {
           const updatedDoctor = {
-            ...singleDoctor,
-            reviews: [...singleDoctor.reviews, newReview], 
+            ...singleHospital,
+            reviews: [...singleHospital.reviews, newReview], 
           };
   
-          dispatch(setSingleDoctor(updatedDoctor));
+          dispatch(setSingleHospital(updatedDoctor));
           toast.success(res.data.message);
           setOpen(false);
         }
@@ -101,7 +101,7 @@ useEffect(() => {
       }
     };
 
-    console.log(singleDoctor);
+    console.log(singleHospital);
     
   
     return (
@@ -160,9 +160,9 @@ useEffect(() => {
     );
   };
 
-  PostReviewDialog.propTypes = {
+  PostHospitalReviewDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired,
   };
   
-  export default PostReviewDialog;
+  export default PostHospitalReviewDialog;

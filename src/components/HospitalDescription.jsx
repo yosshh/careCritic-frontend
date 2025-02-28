@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import { Contact, Mail } from "lucide-react";
+import { Contact, Mail, Star } from "lucide-react";
 import Navbar from "./shared/Navbar";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import { setSingleHospital } from "@/redux/hospitalSlice";
+import { Button } from "./ui/button";
+import PostHospitalReviewDialog from "./PostHospitalReviewDialog";
 
 const HospitalDescription = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const HospitalDescription = () => {
   const [date, setDate] = useState(null);
   const [timeSlot, setTimeSlot] = useState("");
   const [reason, setReason] = useState("");
+  const [open, setOpen] = useState(false);
 
   // Fetch the single doctor's details
   useEffect(() => {
@@ -98,7 +101,13 @@ const HospitalDescription = () => {
               <h1 className="font-medium text-xl">{singleHospital?.hospitalName}</h1>
             </div>
           </div>
-          
+          <Button
+            onClick={() => setOpen(true)}
+            className="text-right"
+            variant="outline"
+          >
+           <Star />Post Review
+          </Button>
         </div>
 
         {/* Doctor details */}
@@ -171,6 +180,7 @@ const HospitalDescription = () => {
             </button>
           </div>
       </div>
+      <PostHospitalReviewDialog open={open} setOpen={setOpen} />
     </div>
   );
 };

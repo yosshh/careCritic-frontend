@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import { Button } from "./ui/button";
-import PostReviewDialog from "./PostReviewDialog";
+import PostDoctorReviewDialog from "./PostDoctorReviewDialog";
 
 
 const DoctorCard = () => {
@@ -196,7 +196,7 @@ const DoctorCard = () => {
           </button>
         </div>
       </div>
-      <PostReviewDialog open={open} setOpen={setOpen} />
+      <PostDoctorReviewDialog open={open} setOpen={setOpen} />
     </div>
   );
 };
