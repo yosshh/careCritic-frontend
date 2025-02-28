@@ -2,9 +2,9 @@ import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Award, Contact, GraduationCap, Mail, Pen } from "lucide-react";
-import UpdateDoctorProfileDialog from "./updateDoctorProfileDialog";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import UpdateDoctorProfileDialog from "./updateDoctorProfileDialog";
 
 
 

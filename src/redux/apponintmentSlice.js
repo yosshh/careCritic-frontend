@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const appointmentSlice = createSlice({
-    name:"doctor",
+    name:"appointment",
     initialState:{
         appointments: null
     },

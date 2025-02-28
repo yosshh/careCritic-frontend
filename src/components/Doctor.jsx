@@ -25,9 +25,15 @@ const Doctor = ({ doctor }) => {
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4 flex flex-col items-center space-y-2">
             <h2 className="text-lg font-bold">{doctor?.fullName}</h2>
             <p className="text-sm">{doctor?.experienceInYears || "N/A"} Years of Experience</p>
+            <div className="flex justify-between w-full">
             <button  onClick={()=> navigate(`/description/doctor/${doctor?._id}`)} className="bg-[#F83002] px-4 py-2 rounded-md text-white font-medium hover:bg-[#d78471]">
               View Profile
             </button>
+            <button className="bg-[#003092] px-4 py-2 rounded-md text-white font-medium hover:bg-[#567fcff1]"
+          onClick={()=> navigate(`/reviews/doctor/${doctor?._id}}`)}
+        >View Reviews
+        </button>
+        </div>
           </div>
         )}
       </div>
