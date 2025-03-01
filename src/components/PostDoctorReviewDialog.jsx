@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import PropTypes from 'prop-types'
 import { useParams } from "react-router-dom";
 
+
 const PostDoctorReviewDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const { singleDoctor } = useSelector((store) => store.doctor); 
@@ -54,7 +55,7 @@ useEffect(() => {
   
     const [input, setInput] = useState({
       rating:  "", 
-      comments: "",
+      comment: "",
     });
 
     const changeEventHandler = (e) => {
@@ -67,7 +68,7 @@ useEffect(() => {
       const newReview = {
         user: user?._id,
         rating: input.rating,
-        comment: input.comments,
+        comment: input.comment,
         date: new Date(),
       };
 
@@ -78,30 +79,30 @@ useEffect(() => {
           `${REVIEW_API_END_POINT}/doctor/${singleDoctor?._id}`,
           newReview,
           {
-            headers: { "Content-Type": "application/json" , }, 
+            headers: { "Content-Type": "application/json" }, 
             withCredentials: true,
           }
         );
-
+    
         if (res.data.success) {
-          const updatedDoctor = {
-            ...singleDoctor,
-            reviews: [...singleDoctor.reviews, newReview], 
-          };
-  
-          dispatch(setSingleDoctor(updatedDoctor));
-          toast.success(res.data.message);
-          setOpen(false);
+            dispatch(setSingleDoctor({
+                ...singleDoctor, 
+                reviews: [...singleDoctor.reviews, res.data.data] 
+            }));
+    
+            toast.success(res.data.message);
+            setOpen(false); 
         }
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         toast.error(error?.response?.data?.message || "Something went wrong!");
-      } finally {
+    } finally {
         setLoading(false);
-      }
+    }
+    
     };
 
-    console.log(singleDoctor);
+    // console.log(singleDoctor);
     
   
     return (
@@ -129,14 +130,14 @@ useEffect(() => {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="comments" className="text-right">
-                  Comments
+                <Label htmlFor="comment" className="text-right">
+                  comment
                 </Label>
                 <Input
-                  id="comments"
-                  name="comments"
+                  id="comment"
+                  name="comment"
                   type="text"
-                  value={input.comments}
+                  value={input.comment}
                   onChange={changeEventHandler}
                   className="col-span-3"
                   required

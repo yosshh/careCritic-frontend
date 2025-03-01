@@ -1,10 +1,9 @@
 // import { useSelector } from 'react-redux'
-// import { Badge } from './ui/badge'
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from './ui/table'
 
 
 const ReviewTable = () => {
-   
+//    const { reviews=[] } = useSelector((store)=> store.reviews)
 
     
     
@@ -16,19 +15,18 @@ const ReviewTable = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Date</TableHead>
-                        <TableHead>Hospital Name</TableHead>
+                        <TableHead>Hospital/Doctor Name</TableHead>
                         <TableHead>Ratings</TableHead>
-                        {/* <TableHead className="text-right">Status</TableHead> */}
+                        <TableHead>Comments</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                 {/* {
-                        allAppliedJobs.length <= 0 ? <span>You have not applied for any job yet.</span> : allAppliedJobs.map((appliedJob) => (
-                            <TableRow key={appliedJob._id}>
-                                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
-                                <TableCell>{appliedJob.job?.title}</TableCell>
-                                <TableCell>{appliedJob.job?.company?.companyName}</TableCell>
-                                <TableCell className="text-right"><Badge className={`${appliedJob?.status === "rejected" ? 'bg-red-400' : appliedJob.status === 'pending' ? 'bg-gray-400' : 'bg-green-400'}`}>{appliedJob.status.toUpperCase()}</Badge></TableCell>
+                        reviews.length <= 0 ? <span>You have not posted any reviews.</span> : reviews.map((reviews) => (
+                            <TableRow key={reviews._id}>
+                                <TableCell>{reviews?.createdAt?.split("T")[0]}</TableCell>
+                                <TableCell>{reviews.job?.title}</TableCell>
+                                <TableCell>{reviews.job?.company?.companyName}</TableCell>
                             </TableRow>
                         ))
                     } */}
