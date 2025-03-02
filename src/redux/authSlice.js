@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   error: null,
   doctor: null,
+  hospital: null,
 };
 
 const authSlice = createSlice({
@@ -29,6 +30,14 @@ const authSlice = createSlice({
       state.doctor = doctorData?.doctor || doctorData || null;
       state.error = null;
     },    
+    setHospital: (state, action) => {
+      const hospitalData = action.payload;
+      console.log("Updated hospital:", hospitalData);
+    
+      // Assuming hospital data is always a flat object
+      state.hospial = hospitalData?.hospial || hospitalData || null;
+      state.error = null;
+    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -42,5 +51,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoading, setUser, setError, setLogout, setDoctor } = authSlice.actions;
+export const { setLoading, setUser, setError, setLogout, setDoctor, setHospital } = authSlice.actions;
 export default authSlice.reducer;

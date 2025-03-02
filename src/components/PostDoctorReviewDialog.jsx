@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 const PostDoctorReviewDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
     const { singleDoctor } = useSelector((store) => store.doctor); 
-    const { user } = useSelector((store) => store.auth.user);
+    const { user } = useSelector((store) => store.auth);
     console.log(user,"user");
     
     const dispatch = useDispatch();
