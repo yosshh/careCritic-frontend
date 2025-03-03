@@ -15,11 +15,11 @@ import "react-time-picker/dist/TimePicker.css";
 import { Button } from "./ui/button";
 import PostDoctorReviewDialog from "./PostDoctorReviewDialog";
 
-
 const DoctorCard = () => {
   const dispatch = useDispatch();
   const { singleDoctor } = useSelector((store) => store.doctor);
   const { user } = useSelector((store) => store.auth);
+  console.log("Redux User Object:", user);  
   const params = useParams();
   const doctorId = params.id;
 
@@ -29,8 +29,9 @@ const DoctorCard = () => {
   const [reason, setReason] = useState("");
   const [open, setOpen] = useState(false);
 
-  // Fetch the single doctor's details
+  
   useEffect(() => {
+    if (!user) return;
     const fetchSingleDoctor = async () => {
       try {
         const res = await axios.get(
@@ -39,12 +40,24 @@ const DoctorCard = () => {
         );
         if (res.data.success) {
           dispatch(setSingleDoctor(res.data.data));
+        //   console.log("Doctor Appointments:", res.data.data.appointments);
+        // console.log("Current User ID:", user?._id);
 
-          // Check if the user has already booked an appointment
-          const isAlreadyBooked = res.data.data?.appointments?.some(
-            (appointments) => appointments.user === user?._id
-          );
-          setIsBooked(isAlreadyBooked);
+          
+          setTimeout(() => {
+            if (res.data.data.appointments) {
+              const isAlreadyBooked = res.data.data.appointments.some(
+                (appointment) => 
+                  
+                  {
+                  // console.log("Checking appointment:", appointment);
+                    // console.log("Appointment User ID:", appointment?.user?._id)
+                    return String(appointment?.user?._id) === String(user?._id);}
+              );
+              // console.log("Is Already Booked:", isAlreadyBooked);
+              setIsBooked(isAlreadyBooked);
+            }
+          }, 100); 
         }
       } catch (error) {
         console.log(error);
@@ -52,9 +65,9 @@ const DoctorCard = () => {
       }
     };
     fetchSingleDoctor();
-  }, [doctorId, dispatch, user?._id]);
+  }, [doctorId, dispatch, user]); 
 
-  // Booking handler
+  
   const bookAppointmentHandler = async () => {
     if (!date || !timeSlot || !reason) {
       toast.error("Please fill all fields before booking!");
@@ -78,7 +91,7 @@ const DoctorCard = () => {
       );
 
       if (res.data.success) {
-        // Fetch latest doctor data after successful booking
+       
         const updatedDoctorRes = await axios.get(
           `${DOCTOR_API_END_POINT}/getDoctors/${doctorId}`,
           { withCredentials: true }
@@ -114,7 +127,8 @@ const DoctorCard = () => {
             className="text-right"
             variant="outline"
           >
-           <Star />Post Review
+            <Star />
+            Post Review
           </Button>
         </div>
 
@@ -154,11 +168,11 @@ const DoctorCard = () => {
               onChange={(selectedDate) => setDate(selectedDate)}
               className="w-full p-2 rounded-md border bg-white text-gray-900"
               placeholderText="Pick a date"
-              minDate={new Date()} // Prevent selecting past dates
+              minDate={new Date()} 
             />
           </div>
 
-          {/* Time Picker */}
+         
           <div className="mb-3">
             <label className="block text-sm mb-1 text-[#a01b2b72]">
               Select Time:
@@ -167,11 +181,11 @@ const DoctorCard = () => {
               value={timeSlot}
               onChange={(selectedTime) => setTimeSlot(selectedTime)}
               className="w-full p-2 rounded-md border bg-white text-gray-900"
-              disableClock={true} // Removes the clock UI
+              disableClock={true} 
             />
           </div>
 
-          {/* Reason Input */}
+          
           <div className="mb-3">
             <label className="block text-sm mb-1 text-[#a01b2b72]">
               Reason for Appointment:
@@ -189,7 +203,9 @@ const DoctorCard = () => {
             onClick={isBooked ? null : bookAppointmentHandler}
             disabled={isBooked}
             className={`w-full p-2 text-white rounded-md ${
-              isBooked ? "bg-gray-600 cursor-not-allowed" : "bg-[#FFA09B]"
+              isBooked
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-[#FFA09B] hover:bg-[#ff8b83]"
             }`}
           >
             {isBooked ? "Already Booked" : "Book Appointment"}
