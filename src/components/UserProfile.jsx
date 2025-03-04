@@ -1,4 +1,3 @@
-import ReviewTable from "./ReviewTable";
 import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -48,7 +47,7 @@ const UserProfile = () => {
         
       </div>
       <div className="max-w-4xl mx-auto rounded-2xl">
-        <ReviewTable />
+       
        
       </div>
       <UpdateUserProfileDialog open={open} setOpen={setOpen} />
