@@ -11,24 +11,26 @@ import { setLogout } from "@/redux/authSlice";
 import { USER_API_END_POINT } from "@/constants";
 import { DOCTOR_API_END_POINT } from "@/constants";
 import { HOSPITAL_API_END_POINT } from "@/constants";
+import { persistor } from "@/redux/store";
 
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((store) => store.auth); 
   const { doctor } = useSelector((store)=> store.auth)
+  const { hospital } = useSelector((store)=> store.auth)
 
   // Determine profile route based on user role
   console.log("Redux user object:", user);
 
   const getProfileRoute = () => {
-    const role = user?.doctor?.role || user?.user?.role || user?.hospital?.role
-    console.log("Determined Role:", role); // Debug log
+    console.log("Redux user object:", user, doctor, hospital); // Debugging
   
-    if (role === "Doctor") return "/doctorProfile";
-    if (role === "Hospital") return "/hospitalProfile";
+    if (doctor) return "/doctorProfile";
+    if (hospital) return "/hospitalProfile";
     return "/userProfile";
   };
+  
 
   let endpoint = USER_API_END_POINT;
 
@@ -39,23 +41,29 @@ const Navbar = () => {
   }
   
 
-  const logoutHandler = async () => {
+  const logoutHandler = async () => { 
     try {
       const res = await axios.get(`${endpoint}/logout`, {
         withCredentials: true,
       });
-      console.log("logout successfull", res.data);
+
+      console.log("Logout successful", res.data);
 
       if (res.data.success) {
-        dispatch(setLogout()); 
-        navigate("/");
+        localStorage.clear();  // ✅ Clear all stored data
+        sessionStorage.clear();  // ✅ Clear session data
+        dispatch(setLogout());  // ✅ Reset Redux state
+        persistor.purge();  // ✅ Clear persisted Redux state
+
+        navigate("/"); // ✅ Redirect to homepage
         toast.success(res.data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Logout failed.");
     }
   };
+
   
 
   return (
@@ -88,7 +96,7 @@ const Navbar = () => {
               <Link>About Us</Link>
             </li>
           </ul>
-          {(!user && !doctor) ? (
+          {(!user && !doctor && !hospital) ? (
   <div className="flex items-center gap-2">
     <Link to="/login">
       <Button
@@ -109,7 +117,7 @@ const Navbar = () => {
     <PopoverTrigger asChild>
       <Avatar className="cursor-pointer">
         <AvatarImage
-          src={user?.profilePhoto || doctor?.profilePhoto || "https://github.com/shadcn.png"}
+          src={user?.profilePhoto || doctor?.profilePhoto || hospital?.hospitalImage || "https://github.com/shadcn.png"}
           alt="Profile Photo"
         />
       </Avatar>
@@ -119,12 +127,12 @@ const Navbar = () => {
         <div className="flex gap-4 space-y-2">
           <Avatar className="cursor-pointer">
             <AvatarImage
-              src={user?.profilePhoto || doctor?.profilePhoto || "https://github.com/shadcn.png"}
+              src={user?.profilePhoto || doctor?.profilePhoto || hospital?.profilePhoto || "https://github.com/shadcn.png"}
               alt="Profile Photo"
             />
           </Avatar>
           <div>
-            <h4>{user?.fullName || doctor?.fullName || "Guest"}</h4>
+            <h4>{user?.fullName || doctor?.fullName || hospital?.hospitalName ||"Guest"}</h4>
           </div>
         </div>
         <div className="flex flex-col my-2 text-gray-600">

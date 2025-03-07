@@ -1,22 +1,22 @@
 import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { Award, Contact, GraduationCap, Mail, Pen } from "lucide-react";
+import { Award, Contact, Mail, MapPinned, Pen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import UpdateDoctorProfileDialog from "./updateDoctorProfileDialog";
-import ReviewTable from "./HospitalReviewTable";
+import HospitalReviewTable from "./HospitalReviewTable"
+import UpdateHospitalProfile from "./updateHospitalProfile";
 
 
 
-const DoctorProfile = () => {
+const HospitalProfile = () => {
   
   const [open, setOpen] = useState(false);
-  const { doctor } = useSelector((store) => store.auth);
+  const { hospital } = useSelector((store) => store.auth);
 
   useEffect(() => {
-    // console.log("Doctor in Profile:", doctor);
-  }, [doctor]);
+    console.log("Hospital in Profile:", hospital);
+  }, [hospital]);
 
   return (
     <div className="bg-[#8FD14F]">
@@ -25,11 +25,10 @@ const DoctorProfile = () => {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={doctor?.profilePhoto} alt="profile" />
+              <AvatarImage src={hospital?.hospitalImage} alt="profile" />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">{doctor?.name}</h1>
-              <p>{doctor?.experienceInYears}+ yrs experience</p>
+              <h1 className="font-medium text-xl">{hospital?.hospitalName}</h1>
             </div>
           </div>
           <Button onClick={() => setOpen(true)} className="text-right" variant="outline">
@@ -39,25 +38,25 @@ const DoctorProfile = () => {
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <Mail />
-            <span>{doctor?.email}</span>
+            <span>{hospital?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Contact />
-            <span>{doctor?.contactNumber}</span>
+            <span>{hospital?.contactNumber}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Award />
-            <span>{doctor?.specialty}</span>
+            <span>{hospital?.specializedIn}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
-            <GraduationCap />
-            <span>{doctor?.qualification}</span>
+          <MapPinned />
+            <span>{hospital?.address}</span>
           </div>
         </div>
       </div>
-      <UpdateDoctorProfileDialog open={open} setOpen={setOpen} />
-      <ReviewTable />
+      <UpdateHospitalProfile open={open} setOpen={setOpen} />
+      <HospitalReviewTable />
     </div>
   );
 };
-export default DoctorProfile;
+export default HospitalProfile;

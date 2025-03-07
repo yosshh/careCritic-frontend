@@ -16,35 +16,34 @@ const authSlice = createSlice({
       state.loading = action.payload;
     },
     setUser: (state, action) => {
-      const userData = action.payload;
-
-      // Explicitly set null if payload is null
-      state.user = userData?.user || userData || null;
+      console.log("Setting User in Redux:", action.payload);
+      state.user = action.payload || null;
+      state.doctor = null;
+      state.hospital = null;
       state.error = null;
     },
     setDoctor: (state, action) => {
-      const doctorData = action.payload;
-      console.log("Updated doctor:", doctorData);
-    
-      // Assuming doctor data is always a flat object
-      state.doctor = doctorData?.doctor || doctorData || null;
+      console.log("Setting Doctor in Redux:", action.payload);
+      state.doctor = action.payload || null;
+      state.user = null;
+      state.hospital = null;
       state.error = null;
     },    
     setHospital: (state, action) => {
-      const hospitalData = action.payload;
-      console.log("Updated hospital:", hospitalData);
-    
-      // Assuming hospital data is always a flat object
-      state.hospial = hospitalData?.hospial || hospitalData || null;
+      console.log("Setting Hospital in Redux:", action.payload);
+      state.hospital = action.payload || null;
+      state.user = null;
+      state.doctor = null;
       state.error = null;
     },
     setError: (state, action) => {
       state.error = action.payload;
     },
     setLogout: (state) => {
-      // Clear all relevant state fields
+      console.log("Logging out...");
       state.user = null;
       state.doctor = null;
+      state.hospital = null;
       state.loading = false;
       state.error = null;
     },

@@ -31,10 +31,9 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+    console.log("Login Input:", input);  // Debug input values
   
     let endpoint = USER_API_END_POINT;
-    
     if (input.role === "Doctor") {
       endpoint = DOCTOR_API_END_POINT;
     } else if (input.role === "Hospital") {
@@ -43,32 +42,40 @@ const Login = () => {
   
     try {
       dispatch(setLoading(true));
+  
       const res = await axios.post(`${endpoint}/login`, input, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(res);
+  
+      console.log("Login Response:", res.data);  
+  
       if (res.data.success) {
-        console.log("User Data:", res.data.data);
-        if (input.role === "Doctor") {
-          dispatch(setDoctor(res.data.data));
+        const userData = res.data.data;
+  
+        console.log("User Data Extracted:", userData);  
+  
+        if (userData.doctor) {
+          dispatch(setDoctor(userData.doctor));  
           navigate("/doctorProfile");
-        } else if (input.role === "Hospital") {
-          dispatch(setHospital(res.data.data));
-          navigate("/hospital/profile");
+        } else if (userData.hospital) {
+          dispatch(setHospital(userData.hospital));  
+          navigate("/hospitalProfile");
         } else {
-          dispatch(setUser(res.data.data));
+          dispatch(setUser(userData.user));  
           navigate("/userProfile");
         }
+  
         toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Login Error:", error.response?.data || error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       dispatch(setLoading(false));
     }
   };
+  
   return (
     <div>
       <Navbar />

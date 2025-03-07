@@ -34,6 +34,7 @@ const DoctorCard = () => {
     if (!user) return;
     const fetchSingleDoctor = async () => {
       try {
+        dispatch(setSingleDoctor(null)); 
         const res = await axios.get(
           `${DOCTOR_API_END_POINT}/getDoctors/${doctorId}`,
           { withCredentials: true }

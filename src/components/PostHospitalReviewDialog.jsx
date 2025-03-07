@@ -14,7 +14,8 @@ import { useParams } from "react-router-dom";
 
 const PostHospitalReviewDialog = ({ open, setOpen }) => {
     const [loading, setLoading] = useState(false);
-    const { singleHospital } = useSelector((store) => store.hospital); 
+    const [hasReviewed, setHasReviewed] = useState(false);
+    const { singleHospital, setAddReview } = useSelector((store) => store.hospital); 
     const { user } = useSelector((store) => store.auth);
     console.log(user,"user");
     
@@ -27,29 +28,38 @@ const PostHospitalReviewDialog = ({ open, setOpen }) => {
 
 
 useEffect(() => {
-  const fetchSingleHospital = async () => {
+  if (!user || !open) return; 
+
+  const fetchSingleDoctor = async () => {
     try {
-      if (!user) {
-        console.log("User not logged in, skipping API call.");
-        return;
-      }
+      dispatch(setSingleHospital(null)); 
 
-      const res = await axios.get(`${HOSPITAL_API_END_POINT}/getHospital/${hospitalId}`, {
-        headers: { Authorization: `Bearer ${user?.token}` },
-        withCredentials: true, 
-      });
+      const res = await axios.get(
+        `${HOSPITAL_API_END_POINT}/getHospital/${hospitalId}`,
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+          withCredentials: true,
+        }
+      );
 
-      // console.log("API Response:", res.data);
       if (res.data.success) {
         dispatch(setSingleHospital(res.data.data));
+
+        const hasAlreadyReviewed = res.data.data.reviews?.some(
+          (review) => String(review?.user?._id) === String(user?._id)
+        );
+        setHasReviewed(hasAlreadyReviewed);
       }
     } catch (error) {
       console.error("Error fetching doctor:", error);
     }
   };
 
-  fetchSingleHospital();
-}, [hospitalId, dispatch, user]);
+  fetchSingleDoctor();
+
+  return () => {
+    setHasReviewed(false)};
+}, [hospitalId, dispatch, user, open]); 
 
   
     const [input, setInput] = useState({
@@ -64,10 +74,20 @@ useEffect(() => {
     const submitHandler = async (e) => {
       e.preventDefault();
   
+     
+      if (!input.rating || input.rating < 1 || input.rating > 5) {
+        toast.error("Rating must be between 1 and 5.");
+        return;
+      }
+      if (!input.comment.trim()) {
+        toast.error("Comment cannot be empty.");
+        return;
+      }
+  
       const newReview = {
         user: user?._id,
         rating: input.rating,
-        comment: input.comments,
+        comment: input.comment,
         date: new Date(),
       };
 
@@ -83,16 +103,14 @@ useEffect(() => {
           }
         );
 
-        if (res.data.success) {
-          const updatedDoctor = {
-            ...singleHospital,
-            reviews: [...singleHospital.reviews, newReview], 
-          };
-  
-          dispatch(setSingleHospital(updatedDoctor));
-          toast.success(res.data.message);
-          setOpen(false);
-        }
+       if (res.data.success) {
+               dispatch(setAddReview(res.data.data)); 
+       
+               toast.success(res.data.message);
+               setHasReviewed(true); 
+               setInput({ rating: "", comment: "" });
+               setOpen(false);
+             }
       } catch (error) {
         console.error(error);
         toast.error(error?.response?.data?.message || "Something went wrong!");
@@ -101,7 +119,7 @@ useEffect(() => {
       }
     };
 
-    console.log(singleHospital);
+    // console.log(singleHospital);
     
   
     return (
@@ -144,16 +162,22 @@ useEffect(() => {
               </div>
             </div>
             <DialogFooter>
+            <Button
+              type="submit"
+              className="w-full my-4"
+              disabled={hasReviewed || loading}
+            >
               {loading ? (
-                <Button className="w-full my-4" disabled>
+                <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Posting...
-                </Button>
+                </>
+              ) : hasReviewed ? (
+                "Already Reviewed"
               ) : (
-                <Button type="submit" className="w-full my-4">
-                  Post
-                </Button>
+                "Post"
               )}
-            </DialogFooter>
+            </Button>
+          </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>

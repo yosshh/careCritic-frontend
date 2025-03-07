@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { Table, TableBody, TableCaption, TableHead, TableHeader, TableRow } from './ui/table'
 
 
 
 const ReviewTable = () => {
-    const { singleHospital } = useSelector((store)=> store.hospital)
-    const { singleDoctor } = useSelector((store)=> store.doctor)
     return (
         <div>
             <Table>
@@ -13,7 +11,7 @@ const ReviewTable = () => {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Date</TableHead>
-                        <TableHead>{singleDoctor?.role || singleHospital?.role} Name</TableHead>
+                        <TableHead>User Name</TableHead>
                         <TableHead>Ratings</TableHead>
                         <TableHead>Comments</TableHead>
                     </TableRow>

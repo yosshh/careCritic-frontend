@@ -30,7 +30,7 @@ const Doctor = ({ doctor }) => {
               View Profile
             </button>
             <button className="bg-[#003092] px-4 py-2 rounded-md text-white font-medium hover:bg-[#567fcff1]"
-          onClick={()=> navigate(`/reviews/doctor/${doctor?._id}}`)}
+          onClick={()=> navigate(`/reviews/doctor/${doctor?._id}`)}
         >View Reviews
         </button>
         </div>

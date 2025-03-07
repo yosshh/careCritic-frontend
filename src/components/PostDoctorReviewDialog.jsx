@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { REVIEW_API_END_POINT, DOCTOR_API_END_POINT } from "@/constants";
 import axios from "axios";
-import { setSingleDoctor } from "@/redux/doctorSlice";
+import { setAddReview, setSingleDoctor } from "@/redux/doctorSlice";
 import { toast } from "sonner";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
@@ -23,16 +23,18 @@ const PostDoctorReviewDialog = ({ open, setOpen }) => {
   const [hasReviewed, setHasReviewed] = useState(false);
   const { singleDoctor } = useSelector((store) => store.doctor);
   const { user } = useSelector((store) => store.auth);
-
   const dispatch = useDispatch();
   const params = useParams();
   const doctorId = params.id;
 
+  
   useEffect(() => {
-    if (!user) return;
+    if (!user || !open) return; 
 
     const fetchSingleDoctor = async () => {
       try {
+        dispatch(setSingleDoctor(null)); 
+
         const res = await axios.get(
           `${DOCTOR_API_END_POINT}/getDoctors/${doctorId}`,
           {
@@ -47,7 +49,6 @@ const PostDoctorReviewDialog = ({ open, setOpen }) => {
           const hasAlreadyReviewed = res.data.data.reviews?.some(
             (review) => String(review?.user?._id) === String(user?._id)
           );
-
           setHasReviewed(hasAlreadyReviewed);
         }
       } catch (error) {
@@ -57,20 +58,33 @@ const PostDoctorReviewDialog = ({ open, setOpen }) => {
 
     fetchSingleDoctor();
 
-    return () => setHasReviewed(false); 
-  }, [doctorId, dispatch, user]);
+    return () => {
+      setHasReviewed(false)};
+  }, [doctorId, dispatch, user, open]); 
 
   const [input, setInput] = useState({
     rating: "",
     comment: "",
   });
 
+
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
+
   const submitHandler = async (e) => {
     e.preventDefault();
+
+   
+    if (!input.rating || input.rating < 1 || input.rating > 5) {
+      toast.error("Rating must be between 1 and 5.");
+      return;
+    }
+    if (!input.comment.trim()) {
+      toast.error("Comment cannot be empty.");
+      return;
+    }
 
     const newReview = {
       user: user?._id,
@@ -91,16 +105,12 @@ const PostDoctorReviewDialog = ({ open, setOpen }) => {
       );
 
       if (res.data.success) {
-        dispatch(
-          setSingleDoctor({
-            ...singleDoctor,
-            reviews: [...(singleDoctor.reviews ?? []), res.data.data], 
-          })
-        );
+        dispatch(setAddReview(res.data.data)); 
 
         toast.success(res.data.message);
-        setOpen(false);
         setHasReviewed(true); 
+        setInput({ rating: "", comment: "" });
+        setOpen(false);
       }
     } catch (error) {
       console.error(error);
@@ -156,7 +166,7 @@ const PostDoctorReviewDialog = ({ open, setOpen }) => {
             <Button
               type="submit"
               className="w-full my-4"
-              disabled={hasReviewed || loading} 
+              disabled={hasReviewed || loading}
             >
               {loading ? (
                 <>

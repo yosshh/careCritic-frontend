@@ -33,6 +33,7 @@ const HospitalDescription = () => {
     if(!user) return
     const fetchSingleHospital = async () => {
       try {
+        dispatch(setSingleHospital(null)); 
         const res = await axios.get(
           `${HOSPITAL_API_END_POINT}/getHospital/${hospitalId}`,
           { withCredentials: true }
